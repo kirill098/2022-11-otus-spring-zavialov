@@ -3,6 +3,6 @@ package ru.otus.homework.model;
 import lombok.Data;
 
 @Data
-public class Answer<T> {
-    private T title;
+public class Answer {
+    private String title;
 }
