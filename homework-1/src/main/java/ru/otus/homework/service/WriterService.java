@@ -4,7 +4,7 @@ import ru.otus.homework.model.Task;
 
 import java.util.List;
 
-public interface TaskService {
+public interface WriterService {
 
-    List<Task> readAll();
+    void writeAll(List<Task> tasks);
 }

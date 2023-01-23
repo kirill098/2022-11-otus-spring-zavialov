@@ -4,6 +4,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="personDao" class="ru.otus.spring.dao.PersonDaoSimple"/>
-    <bean id="personService" class="ru.otus.spring.service.PersonServiceImpl"/>
+    <bean id="taskDao" class="ru.otus.homework.dao.impl.TaskDaoImpl">
+        <constructor-arg name="pathToFile" value="tasks.csv"/>
+    </bean>
+
+    <bean id="taskService" class="ru.otus.homework.service.impl.TaskServiceImpl">
+        <constructor-arg name="dao" ref="taskDao"/>
+    </bean>
+
+    <bean id="writerService" class="ru.otus.homework.service.impl.WriterServiceImpl"/>
 </beans>
