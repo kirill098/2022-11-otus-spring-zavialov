@@ -1,12 +1,12 @@
 package ru.otus.homework.model;
 
-import com.opencsv.bean.CsvRecurse;
+import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 
 @Data
 public class Task {
-    @CsvRecurse
-    private Question question;
-    @CsvRecurse
-    private Answer answer;
+    @CsvBindByName(column = "question", required = true)
+    private String question;
+    @CsvBindByName(column = "answer", required = true)
+    private String answer;
 }

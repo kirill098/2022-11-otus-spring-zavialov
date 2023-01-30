@@ -2,39 +2,38 @@ package ru.otus.homework.dao.impl;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import lombok.SneakyThrows;
+import lombok.RequiredArgsConstructor;
 import ru.otus.homework.dao.TaskDao;
 import ru.otus.homework.model.Task;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class TaskDaoImpl implements TaskDao {
 
+    private final String pathToFile;
+    private CsvToBean<Task> parser;
 
-    private final CsvToBean<Task> parser;
-
-    public TaskDaoImpl(String pathToFile) {
-        this.parser = setParser(pathToFile);
-
-    }
-
-    @SneakyThrows
-    private static CsvToBean<Task> setParser(String pathToFile) {
-        InputStream input = TaskDaoImpl.class.getClassLoader().getResourceAsStream(pathToFile);
-        if (input == null) {
-            throw new FileNotFoundException(String.format("File not found for path=%s", pathToFile));
+    private void setParser() {
+        if (parser != null) {
+            return;
         }
-        return new CsvToBeanBuilder<Task>(new InputStreamReader(input))
-                .withType(Task.class)
-                .withSeparator(';')
-                .build();
+        try (InputStream input = this.getClass().getClassLoader().getResourceAsStream(pathToFile)) {
+            parser = new CsvToBeanBuilder<Task>(new InputStreamReader(input))
+                    .withType(Task.class)
+                    .withSeparator(';')
+                    .build();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Override
     public List<Task> getAll() {
+        setParser();
         return parser.parse();
     }
 }
