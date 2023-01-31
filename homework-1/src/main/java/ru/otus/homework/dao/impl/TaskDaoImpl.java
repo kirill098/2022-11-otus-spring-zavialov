@@ -15,17 +15,14 @@ import java.util.List;
 public class TaskDaoImpl implements TaskDao {
 
     private final String pathToFile;
-    private CsvToBean<Task> parser;
 
-    private void setParser() {
-        if (parser != null) {
-            return;
-        }
-        try (InputStream input = this.getClass().getClassLoader().getResourceAsStream(pathToFile)) {
-            parser = new CsvToBeanBuilder<Task>(new InputStreamReader(input))
+    private List<Task> parseAllTasks() {
+        try (InputStream input = TaskDaoImpl.class.getClassLoader().getResourceAsStream(pathToFile)) {
+            CsvToBean<Task> parser = new CsvToBeanBuilder<Task>(new InputStreamReader(input))
                     .withType(Task.class)
                     .withSeparator(';')
                     .build();
+            return parser.parse();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -33,7 +30,6 @@ public class TaskDaoImpl implements TaskDao {
 
     @Override
     public List<Task> getAll() {
-        setParser();
-        return parser.parse();
+        return parseAllTasks();
     }
 }
