@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="taskDao" class="ru.otus.homework.dao.impl.TaskDaoImpl">
+        <constructor-arg name="pathToFile" value="tasks.csv"/>
+    </bean>
+
+    <bean id="taskService" class="ru.otus.homework.service.impl.TaskServiceImpl">
+        <constructor-arg name="dao" ref="taskDao"/>
+    </bean>
+
+    <bean id="taskOutputService" class="ru.otus.homework.service.impl.TaskOutputServiceImpl">
+        <constructor-arg name="printStream" value="#{T(java.lang.System).out}"/>
+        <constructor-arg name="taskService" ref="taskService"/>
+    </bean>
+
+    <bean id="testService" class="ru.otus.homework.service.impl.TestServiceImpl">
+        <constructor-arg name="taskOutputService" ref="taskOutputService"/>
+    </bean>
+</beans>
