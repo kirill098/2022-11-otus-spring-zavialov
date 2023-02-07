@@ -2,19 +2,22 @@ package ru.otus.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import ru.otus.homework.model.Task;
-import ru.otus.homework.service.OutputService;
+import ru.otus.homework.service.TaskOutputService;
+import ru.otus.homework.service.TaskService;
 
 import java.io.PrintStream;
 import java.util.List;
 import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
-public class OutputServiceImpl implements OutputService {
+public class TaskOutputServiceImpl implements TaskOutputService {
 
+    private final TaskService taskService;
     private final PrintStream printStream;
 
     @Override
-    public void outputTasks(List<Task> tasks) {
+    public void printAll() {
+        List<Task> tasks = taskService.readAll();
         IntStream.range(0, tasks.size()).forEach(it -> {
             Task task = tasks.get(it);
             String template = "Task #%s \n" +

@@ -12,12 +12,12 @@
         <constructor-arg name="dao" ref="taskDao"/>
     </bean>
 
-    <bean id="outputService" class="ru.otus.homework.service.impl.OutputServiceImpl">
+    <bean id="taskOutputService" class="ru.otus.homework.service.impl.TaskOutputServiceImpl">
         <constructor-arg name="printStream" value="#{T(java.lang.System).out}"/>
+        <constructor-arg name="taskService" ref="taskService"/>
     </bean>
 
     <bean id="testService" class="ru.otus.homework.service.impl.TestServiceImpl">
-        <constructor-arg name="outputService" ref="outputService"/>
-        <constructor-arg name="taskService" ref="taskService"/>
+        <constructor-arg name="taskOutputService" ref="taskOutputService"/>
     </bean>
 </beans>
