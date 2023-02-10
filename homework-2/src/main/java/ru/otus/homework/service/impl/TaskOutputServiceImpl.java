@@ -1,6 +1,7 @@
 package ru.otus.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.otus.homework.model.Task;
 import ru.otus.homework.service.TaskOutputService;
 import ru.otus.homework.service.TaskService;
@@ -9,6 +10,7 @@ import java.io.PrintStream;
 import java.util.List;
 import java.util.stream.IntStream;
 
+@Service
 @RequiredArgsConstructor
 public class TaskOutputServiceImpl implements TaskOutputService {
 
