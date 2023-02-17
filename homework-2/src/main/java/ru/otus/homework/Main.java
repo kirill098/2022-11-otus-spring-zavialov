@@ -10,9 +10,7 @@ import ru.otus.homework.service.TestService;
 public class Main {
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(Main.class);
-
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
         TestService service = context.getBean(TestService.class);
         service.begin();
     }

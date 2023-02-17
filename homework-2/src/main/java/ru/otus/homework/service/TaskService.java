@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface TaskService {
 
-    List<Task> readAll();
+    List<Task> getAll();
+
+    boolean complete(Task task);
+
 }
