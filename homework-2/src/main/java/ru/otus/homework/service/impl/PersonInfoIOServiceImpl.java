@@ -7,10 +7,12 @@ import ru.otus.homework.model.UserData;
 import ru.otus.homework.service.PersonInfoIOService;
 
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
-import static ru.otus.homework.util.TemplateMessage.FAILED_USER_RESULT;
-import static ru.otus.homework.util.TemplateMessage.SUCCEED_USER_RESULT;
+import static ru.otus.homework.util.TemplateMessages.FAILED_USER_RESULT;
+import static ru.otus.homework.util.TemplateMessages.SUCCEED_USER_RESULT;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +39,8 @@ public class PersonInfoIOServiceImpl implements PersonInfoIOService {
 
     private UserData checkAndConvertArguments(String[] args) {
         if (args == null || args.length != 2) {
-            throw new IllegalArgumentException(String.format("Input data is incorrect, data=%s", args));
+            throw new IllegalArgumentException(String.format("Input data is incorrect, data=%s",
+                    Arrays.stream(args).collect(Collectors.toList())));
         }
         return new UserData(args[0], args[1]);
     }

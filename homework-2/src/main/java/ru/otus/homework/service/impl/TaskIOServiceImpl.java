@@ -8,7 +8,7 @@ import ru.otus.homework.service.TaskIOService;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-import static ru.otus.homework.util.TemplateMessage.ASK_QUESTION_TEMPLATE;
+import static ru.otus.homework.util.TemplateMessages.ASK_QUESTION;
 
 @Service
 @RequiredArgsConstructor
@@ -19,12 +19,7 @@ public class TaskIOServiceImpl implements TaskIOService {
 
     @Override
     public void askQuestion(Task task) {
-        printStream.printf(ASK_QUESTION_TEMPLATE, task.getQuestion());
-    }
-
-    @Override
-    public String getAnswer(String description) {
-        return null;
+        printStream.printf(ASK_QUESTION, task.getQuestion());
     }
 
     @Override

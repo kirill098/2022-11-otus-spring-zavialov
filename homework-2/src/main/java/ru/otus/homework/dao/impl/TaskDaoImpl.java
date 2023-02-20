@@ -22,6 +22,11 @@ public class TaskDaoImpl implements TaskDao {
     @Value("${file.tasks.name}")
     private String fileName;
 
+    @Override
+    public List<Task> getAll() {
+        return parseAllTasks();
+    }
+
     private List<Task> parseAllTasks() {
         try (InputStream input = TaskDaoImpl.class.getClassLoader().getResourceAsStream(fileName)) {
             CsvToBeanBuilder<Task> taskCsvToBeanBuilder = new CsvToBeanBuilder<Task>(new InputStreamReader(input));
@@ -32,10 +37,5 @@ public class TaskDaoImpl implements TaskDao {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
-    }
-
-    @Override
-    public List<Task> getAll() {
-        return parseAllTasks();
     }
 }

@@ -1,8 +1,11 @@
 package ru.otus.homework.util;
 
-public class TemplateMessage {
+public class TemplateMessages {
 
-    public static final String ASK_QUESTION_TEMPLATE = "Write the correct answer\n %s=";
+    private TemplateMessages() {
+    }
+
+    public static final String ASK_QUESTION = "Write the correct answer\n %s=";
 
     public static final String SUCCEED_USER_RESULT = "Dear user, %s %s!\n" +
             "You passed the test successfully!\n" +

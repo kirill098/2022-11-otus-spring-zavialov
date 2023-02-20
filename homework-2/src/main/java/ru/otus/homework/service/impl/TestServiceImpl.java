@@ -22,8 +22,6 @@ public class TestServiceImpl implements TestService {
 
     private final PersonInfoIOService personInfoIOService;
     private final TaskService taskService;
-//    @Value("passing-score")
-
     @Value("#{T(java.lang.Float).parseFloat('${passing-score:0}')}")
     private float passingScore;
 

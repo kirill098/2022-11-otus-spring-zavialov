@@ -16,7 +16,6 @@ public class TaskServiceImpl implements TaskService {
     private final TaskIOService taskIOService;
     private final TaskDao dao;
 
-
     @Override
     public List<Task> getAll() {
         return dao.getAll();

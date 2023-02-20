@@ -6,7 +6,5 @@ public interface TaskIOService {
 
     void askQuestion(Task task);
 
-    String getAnswer(String description);
-
     String getAnswer();
 }
