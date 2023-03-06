@@ -2,11 +2,10 @@ package ru.otus.homework.dao.impl;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.dao.TaskDao;
+import ru.otus.homework.exception.CsvParseException;
 import ru.otus.homework.model.Task;
 
 import java.io.IOException;
@@ -15,12 +14,13 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 @Repository
-@PropertySource("classpath:application.properties")
-@RequiredArgsConstructor
 public class TaskDaoImpl implements TaskDao {
 
-    @Value("${file.tasks.name}")
     private String fileName;
+
+    public TaskDaoImpl(@Value("${file.tasks.name}") String fileName) {
+        this.fileName = fileName;
+    }
 
     @Override
     public List<Task> getAll() {
@@ -35,7 +35,7 @@ public class TaskDaoImpl implements TaskDao {
             CsvToBean<Task> parser = taskCsvToBeanBuilder.build();
             return parser.parse();
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new CsvParseException(e);
         }
     }
 }
