@@ -16,7 +16,7 @@ public class IOServiceImpl implements IOService {
 
     @Override
     public void printLine(String text) {
-        printStream.println(text);
+        printStream.print(text);
     }
 
     @Override
