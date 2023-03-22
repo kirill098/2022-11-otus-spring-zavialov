@@ -1,0 +1,6 @@
+application:
+  locale: ru_RU
+
+test:
+  file-name: test-tasks.csv
+  passing-score: 40.0

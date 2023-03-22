@@ -1,0 +1,11 @@
+application:
+  locale: ru_RU
+
+spring:
+  messages:
+    basename: "i18n/messages"
+    encoding: "UTF-8"
+
+test:
+  file-name: tasks.csv
+  passing-score: 60.0
