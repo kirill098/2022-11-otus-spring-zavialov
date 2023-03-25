@@ -13,7 +13,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,7 +34,7 @@ class IOServiceImplTest {
         messageService = Mockito.mock(MessageService.class);
         Mockito.when(messageService.createMessage(Mockito.any(), Mockito.any())).thenReturn("EXAMPLE");
         System.setIn(inputStream);
-        ioService = new IOServiceImpl(messageService, new PrintStream(outputStream), new Scanner(inputStream));
+        ioService = new IOServiceImpl(messageService, new PrintStream(outputStream), inputStream);
     }
 
     @DisplayName("должен читать корректно")

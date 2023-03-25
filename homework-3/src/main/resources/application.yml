@@ -9,3 +9,7 @@ spring:
 test:
   file-name: tasks.csv
   passing-score: 60.0
+
+bean:
+  output: "#{T(java.lang.System).out}"
+  input: "#{ T(java.lang.System).in}"

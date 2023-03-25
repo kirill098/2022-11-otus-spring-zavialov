@@ -4,3 +4,7 @@ application:
 test:
   file-name: test-tasks.csv
   passing-score: 40.0
+
+bean:
+  output: "#{T(java.lang.System).out}"
+  input: "#{ T(java.lang.System).in}"
