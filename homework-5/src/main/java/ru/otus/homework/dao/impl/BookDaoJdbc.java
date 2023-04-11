@@ -11,8 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
-import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 
 @Repository
@@ -21,16 +21,15 @@ public class BookDaoJdbc implements BookDao {
 
     private final NamedParameterJdbcOperations jdbc;
 
-    // TODO : ошибка если не найдено
     @Override
     public Book getById(Long id) {
-        return jdbc.queryForObject(
-                "select (id, title, author_id, genre_id) from book where id = :id", singletonMap("id", id), new BookMapper());
+        return jdbc.queryForObject("select id, title, author_id, genre_id from book where id = :id",
+                singletonMap("id", id), new BookMapper());
     }
 
     @Override
     public List<Book> getAll() {
-        return jdbc.query("select (id, title, author_id, genre_id) from book", emptyMap(), new BookMapper());
+        return jdbc.query("select id, title, author_id, genre_id from book", new BookMapper());
     }
 
     @Override
@@ -39,20 +38,28 @@ public class BookDaoJdbc implements BookDao {
                 "id", book.getId(),
                 "title", book.getTitle(),
                 "author_id", book.getAuthorId(),
-                "genre_id", book.getGenreId());
+                "genre_id", book.getGenreId()
+        );
         jdbc.update("insert into book (id, title, author_id, genre_id) values (:id, :title, :author_id, :genre_id)", params);
     }
 
-    // TODO : ошибка если нечего апдейтить
     @Override
     public void update(Book book) {
+        Long bookId = book.getId();;
+        if (bookId == null) {
+            throw new IllegalArgumentException("id is empty");
+        }
         Map<String, Object> params = Map.of(
-                "id", book.getId(),
+                "id", bookId,
                 "title", book.getTitle(),
                 "author_id", book.getAuthorId(),
-                "genre_id", book.getGenreId());
-        jdbc.update("update (id, title, author_id, genre_id) values (:id, :title, :author_id, :genre_id) " +
-                "from book where id = :id", params);
+                "genre_id", book.getGenreId()
+        );
+        int count = jdbc.update("update book set title = :title, author_id = :author_id, genre_id = :genre_id "
+                + "where id = :id", params);
+        if (count == 0) {
+            throw new NoSuchElementException(String.format("No book found with id=%s", bookId));
+        }
     }
 
     @Override
@@ -64,9 +71,9 @@ public class BookDaoJdbc implements BookDao {
 
         @Override
         public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
-            long id = rs.getLong("id");
-            long author_id = rs.getLong("author_id");
-            long genre_id = rs.getLong("genre_id");
+            Long id = rs.getLong("id");
+            Long author_id = rs.getLong("author_id");
+            Long genre_id = rs.getLong("genre_id");
             String title = rs.getString("title");
             return new Book(id, title, author_id, genre_id);
         }
