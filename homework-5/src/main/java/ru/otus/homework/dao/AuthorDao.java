@@ -8,7 +8,7 @@ public interface AuthorDao {
 
     void create(Author author);
 
-    void update(Author author);
+    int update(Author author);
 
-    void deleteById(Long id);
+    int deleteById(Long id);
 }

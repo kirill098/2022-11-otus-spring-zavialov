@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import static java.util.Collections.singletonMap;
 
@@ -44,27 +43,20 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public void update(Book book) {
-        Long bookId = book.getId();;
-        if (bookId == null) {
-            throw new IllegalArgumentException("id is empty");
-        }
+    public int update(Book book) {
         Map<String, Object> params = Map.of(
-                "id", bookId,
+                "id", book.getId(),
                 "title", book.getTitle(),
                 "author_id", book.getAuthorId(),
                 "genre_id", book.getGenreId()
         );
-        int count = jdbc.update("update book set title = :title, author_id = :author_id, genre_id = :genre_id "
+        return jdbc.update("update book set title = :title, author_id = :author_id, genre_id = :genre_id "
                 + "where id = :id", params);
-        if (count == 0) {
-            throw new NoSuchElementException(String.format("No book found with id=%s", bookId));
-        }
     }
 
     @Override
-    public void deleteById(Long id) {
-        jdbc.update("delete from book where id = :id", singletonMap("id", id));
+    public int deleteById(Long id) {
+        return jdbc.update("delete from book where id = :id", singletonMap("id", id));
     }
 
     private static class BookMapper implements RowMapper<Book> {

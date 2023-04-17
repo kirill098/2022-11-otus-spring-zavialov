@@ -1,7 +1,3 @@
-drop table if exists book;
-drop table if exists genre;
-drop table if exists author;
-
 create table if not exists genre(
     id bigint primary key,
     title varchar(255) not null

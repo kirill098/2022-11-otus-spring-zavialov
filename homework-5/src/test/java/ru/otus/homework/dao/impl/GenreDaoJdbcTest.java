@@ -60,6 +60,7 @@ class GenreDaoJdbcTest {
         val authorId = genre.getId();
         jdbc.create(genre);
         jdbc.deleteById(authorId);
+        // todo : мое исключение
         assertThrows(EmptyResultDataAccessException.class, () -> jdbc.getById(authorId));
     }
 

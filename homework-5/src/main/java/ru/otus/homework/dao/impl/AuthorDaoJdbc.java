@@ -1,7 +1,6 @@
 package ru.otus.homework.dao.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -11,7 +10,6 @@ import ru.otus.homework.model.Author;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import static java.util.Collections.singletonMap;
 
@@ -23,12 +21,8 @@ public class AuthorDaoJdbc implements AuthorDao {
 
     @Override
     public Author getById(Long id) {
-        val result = jdbc.queryForObject("select id, name from author where id = :id",
+        return jdbc.queryForObject("select id, name from author where id = :id",
                 singletonMap("id", id), new AuthorMapper());
-        if (result == null) {
-            throw new NoSuchElementException(String.format("No author found with id=%s", id));
-        }
-        return result;
     }
 
     @Override
@@ -38,20 +32,14 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public void update(Author author) {
-        if (author.getId() == null) {
-            throw new IllegalArgumentException("id is empty");
-        }
+    public int update(Author author) {
         Map<String, Object> params = Map.of("id", author.getId(), "name", author.getName());
-        int count = jdbc.update("update author set name = :name where id = :id", params);
-        if (count == 0) {
-            throw new NoSuchElementException(String.format("No author found with id=%s", author.getId()));
-        }
+        return jdbc.update("update author set name = :name where id = :id", params);
     }
 
     @Override
-    public void deleteById(Long id) {
-        jdbc.update("delete from author where id = :id", singletonMap("id", id));
+    public int deleteById(Long id) {
+        return jdbc.update("delete from author where id = :id", singletonMap("id", id));
     }
 
     private static class AuthorMapper implements RowMapper<Author> {

@@ -6,12 +6,13 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.homework.dao.BookDao;
 import ru.otus.homework.model.Book;
+import ru.otus.homework.service.BookService;
 
 @ShellComponent
 @RequiredArgsConstructor
 public class ApplicationShellCommands {
 
-    private final BookDao bookDao;
+    private final BookService bookDao;
 
     // cb --id 33 --title MyBook --authorId 1 --genreId 1
     @ShellMethod(value = "create book", key = {"cb"})

@@ -17,21 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Import(AuthorDaoJdbc.class)
 class AuthorDaoJdbcTest {
 
-    private static final String TEST_NAME = "author_name_1";
-    private static final String TEST_GET_BY_ID_NAME = "author_name_3";
-    private static final long TEST_CREATE_AUTHOR_ID = 111;
-
-    private static final long TEST_DELETE_BY_ID_AUTHOR_ID = 112;
-    private static final long TEST_UPDATE_AUTHOR_ID = 2;
-    private static final long TEST_GET_BY_ID_AUTHOR_ID = 3;
-
     @Autowired
     private AuthorDaoJdbc jdbc;
 
     @DisplayName("получение записи по id")
     @Test
     void getById() {
-        val actual = jdbc.getById(TEST_GET_BY_ID_AUTHOR_ID);
+        val actual = jdbc.getById(3L);
         assertEquals(testGetByIdAuthor(), actual);
     }
 
@@ -60,22 +52,23 @@ class AuthorDaoJdbcTest {
         val authorId = author.getId();
         jdbc.create(author);
         jdbc.deleteById(authorId);
+        // todo : мое исключение
         assertThrows(EmptyResultDataAccessException.class, () -> jdbc.getById(authorId));
     }
 
     private static Author testCreateAuthor() {
-        return new Author(TEST_CREATE_AUTHOR_ID, TEST_NAME);
+        return new Author(111L, "author_name_1");
     }
 
     private static Author testUpdateAuthor() {
-        return new Author(TEST_UPDATE_AUTHOR_ID, TEST_NAME);
+        return new Author(2L, "author_name_1");
     }
 
     private static Author testGetByIdAuthor() {
-        return new Author(TEST_GET_BY_ID_AUTHOR_ID, TEST_GET_BY_ID_NAME);
+        return new Author(3L, "author_name_3");
     }
 
     private static Author testDeleteByIdAuthor() {
-        return new Author(TEST_DELETE_BY_ID_AUTHOR_ID, TEST_NAME);
+        return new Author(112L, "author_name_1");
     }
 }
