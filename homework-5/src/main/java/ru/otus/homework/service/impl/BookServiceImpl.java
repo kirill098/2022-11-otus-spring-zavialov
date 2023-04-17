@@ -1,6 +1,8 @@
 package ru.otus.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.dao.BookDao;
 import ru.otus.homework.exception.AlreadyExistObjectException;
@@ -18,11 +20,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getById(Long id) {
-        Book book = dao.getById(id);
-        if (book == null) {
-            throw new NotFoundObjectException("Book not found with id = %s", book.getId());
+        try {
+            return dao.getById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundObjectException("Book not found with id = %s", id);
         }
-        return book;
     }
 
     @Override
@@ -34,8 +36,7 @@ public class BookServiceImpl implements BookService {
     public void create(Book book) {
         try {
             dao.create(book);
-        } catch (Exception e) {
-            // todo : перехватить исключение "Объект уже существует"
+        } catch (DuplicateKeyException e) {
             throw new AlreadyExistObjectException("Book has already existed with id = %s", book.getId());
         }
     }

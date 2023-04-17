@@ -52,7 +52,6 @@ class AuthorDaoJdbcTest {
         val authorId = author.getId();
         jdbc.create(author);
         jdbc.deleteById(authorId);
-        // todo : мое исключение
         assertThrows(EmptyResultDataAccessException.class, () -> jdbc.getById(authorId));
     }
 

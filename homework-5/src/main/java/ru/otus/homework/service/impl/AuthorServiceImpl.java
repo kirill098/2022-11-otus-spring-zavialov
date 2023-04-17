@@ -1,6 +1,8 @@
 package ru.otus.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.dao.AuthorDao;
 import ru.otus.homework.exception.AlreadyExistObjectException;
@@ -16,19 +18,18 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author getById(Long id) {
-        Author author = dao.getById(id);
-        if (author == null) {
-            throw new NotFoundObjectException("Author not found with id = %s", author.getId());
+        try {
+            return dao.getById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundObjectException("Author not found with id = %s", id);
         }
-        return author;
     }
 
     @Override
     public void create(Author author) {
         try {
             dao.create(author);
-        } catch (Exception e) {
-            // todo : перехватить исключение "Объект уже существует"
+        } catch (DuplicateKeyException e) {
             throw new AlreadyExistObjectException("Author has already existed with id = %s", author.getId());
         }
     }
