@@ -3,16 +3,17 @@ package ru.otus.homework.dao;
 import ru.otus.homework.model.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookDao {
 
-    Book getById(Long id);
+    Optional<Book> getById(Long id);
 
     List<Book> getAll();
 
-    void create(Book book);
+    Book create(Book book);
 
     int update(Book book);
 
-    int deleteById(Long id);
+    void deleteById(Long id);
 }

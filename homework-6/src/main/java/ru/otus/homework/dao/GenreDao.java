@@ -2,13 +2,15 @@ package ru.otus.homework.dao;
 
 import ru.otus.homework.model.Genre;
 
+import java.util.Optional;
+
 public interface GenreDao {
 
-    Genre getById(Long id);
+    Optional<Genre> getById(Long id);
 
-    void create(Genre genre);
+    Genre create(Genre genre);
 
     int update(Genre genre);
 
-    int deleteById(Long id);
+    void deleteById(Long id);
 }

@@ -2,13 +2,15 @@ package ru.otus.homework.dao;
 
 import ru.otus.homework.model.Author;
 
+import java.util.Optional;
+
 public interface AuthorDao {
 
-    Author getById(Long id);
+    Optional<Author> getById(Long id);
 
-    void create(Author author);
+    Author create(Author author);
 
     int update(Author author);
 
-    int deleteById(Long id);
+    void deleteById(Long id);
 }

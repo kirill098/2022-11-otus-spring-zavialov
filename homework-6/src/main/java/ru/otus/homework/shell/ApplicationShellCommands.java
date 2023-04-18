@@ -4,8 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.homework.dao.BookDao;
+import ru.otus.homework.model.Author;
 import ru.otus.homework.model.Book;
+import ru.otus.homework.model.Genre;
 import ru.otus.homework.service.BookService;
 
 @ShellComponent
@@ -23,8 +24,8 @@ public class ApplicationShellCommands {
         Book book = new Book();
         book.setId(id);
         book.setTitle(title);
-        book.setAuthorId(authorId);
-        book.setGenreId(genreId);
+        book.setAuthor(new Author(authorId, ""));
+        book.setGenre(new Genre(genreId, ""));
         bookDao.create(book);
     }
 
@@ -49,8 +50,8 @@ public class ApplicationShellCommands {
         Book book = new Book();
         book.setId(id);
         book.setTitle(title);
-        book.setAuthorId(authorId);
-        book.setGenreId(genreId);
+        book.setAuthor(new Author(authorId, ""));
+        book.setGenre(new Genre(genreId, ""));
         bookDao.update(book);
     }
 

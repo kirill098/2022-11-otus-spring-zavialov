@@ -2,7 +2,6 @@ package ru.otus.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.dao.GenreDao;
 import ru.otus.homework.exception.AlreadyExistObjectException;
@@ -18,11 +17,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public Genre getById(Long id) {
-        try {
-            return dao.getById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new NotFoundObjectException("Genre not found with id = %s", id);
-        }
+        return dao.getById(id).orElseThrow(() -> new NotFoundObjectException("Genre not found with id = %s", id));
     }
 
     @Override
