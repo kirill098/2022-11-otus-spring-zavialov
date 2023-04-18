@@ -12,7 +12,6 @@ import javax.persistence.Query;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-@Transactional
 @Repository
 public class AuthorDaoJpa implements AuthorDao {
 

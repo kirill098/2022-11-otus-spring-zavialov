@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-@Transactional
 @Repository
 public class BookDaoJpa implements BookDao {
 

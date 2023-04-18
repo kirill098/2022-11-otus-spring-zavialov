@@ -3,6 +3,7 @@ package ru.otus.homework.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.dao.AuthorDao;
 import ru.otus.homework.exception.AlreadyExistObjectException;
 import ru.otus.homework.exception.NotFoundObjectException;
@@ -10,6 +11,7 @@ import ru.otus.homework.model.Author;
 import ru.otus.homework.service.AuthorService;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 

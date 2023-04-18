@@ -3,6 +3,7 @@ package ru.otus.homework.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.dao.GenreDao;
 import ru.otus.homework.exception.AlreadyExistObjectException;
 import ru.otus.homework.exception.NotFoundObjectException;
@@ -10,6 +11,7 @@ import ru.otus.homework.model.Genre;
 import ru.otus.homework.service.GenreService;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
 
