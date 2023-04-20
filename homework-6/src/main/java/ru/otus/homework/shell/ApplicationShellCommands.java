@@ -6,8 +6,11 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.homework.model.Author;
 import ru.otus.homework.model.Book;
+import ru.otus.homework.model.Comment;
 import ru.otus.homework.model.Genre;
 import ru.otus.homework.service.BookService;
+
+import java.util.List;
 
 @ShellComponent
 @RequiredArgsConstructor
@@ -15,17 +18,17 @@ public class ApplicationShellCommands {
 
     private final BookService bookDao;
 
-    // cb --id 33 --title MyBook --authorId 1 --genreId 1
+    // cb --title MyBook --authorId 1 --genreId 1 --comment MyComment
     @ShellMethod(value = "create book", key = {"cb"})
-    public void createBook(@ShellOption(defaultValue = "999") Long id,
-                           @ShellOption(defaultValue = "default_book_title") String title,
+    public void createBook(@ShellOption(defaultValue = "default_book_title") String title,
                            @ShellOption(defaultValue = "1") Long authorId,
-                           @ShellOption(defaultValue = "1") Long genreId) {
+                           @ShellOption(defaultValue = "1") Long genreId,
+                           @ShellOption(defaultValue = "empty") String comment) {
         Book book = new Book();
-        book.setId(id);
         book.setTitle(title);
-        book.setAuthor(new Author(authorId, ""));
-        book.setGenre(new Genre(genreId, ""));
+        book.setAuthor(new Author(authorId));
+        book.setGenre(new Genre(genreId));
+        book.setComments(List.of(new Comment(comment)));
         bookDao.create(book);
     }
 
@@ -41,17 +44,19 @@ public class ApplicationShellCommands {
         System.out.println(book);
     }
 
-    // ub --id 1 --title MyBook --authorId 2 --genreId 2
+    // ub --id 1 --title MyBook --authorId 2 --genreId 2 --comment SecondComment
     @ShellMethod(value = "update book", key = {"ub"})
     public void updateBook(@ShellOption(defaultValue = "999") Long id,
                            @ShellOption(defaultValue = "default_book_title") String title,
                            @ShellOption(defaultValue = "1") Long authorId,
-                           @ShellOption(defaultValue = "1") Long genreId) {
+                           @ShellOption(defaultValue = "1") Long genreId,
+                           @ShellOption(defaultValue = "empty") String comment) {
         Book book = new Book();
         book.setId(id);
         book.setTitle(title);
-        book.setAuthor(new Author(authorId, ""));
-        book.setGenre(new Genre(genreId, ""));
+        book.setAuthor(new Author(authorId));
+        book.setGenre(new Genre(genreId));
+        book.setComments(List.of(new Comment(comment)));
         bookDao.update(book);
     }
 

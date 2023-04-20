@@ -2,7 +2,6 @@ package ru.otus.homework.dao.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.dao.AuthorDao;
 import ru.otus.homework.model.Author;
 
@@ -25,12 +24,7 @@ public class AuthorDaoJpa implements AuthorDao {
 
     @Override
     public Author create(Author author) {
-        if (author.getId() <= 0) {
-            em.persist(author);
-            return author;
-        } else {
-            return em.merge(author);
-        }
+        return em.merge(author);
     }
 
     @Override

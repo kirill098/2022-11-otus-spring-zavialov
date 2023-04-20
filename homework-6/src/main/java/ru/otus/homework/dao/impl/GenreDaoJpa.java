@@ -2,7 +2,6 @@ package ru.otus.homework.dao.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.dao.GenreDao;
 import ru.otus.homework.model.Genre;
 
@@ -25,12 +24,7 @@ public class GenreDaoJpa implements GenreDao {
 
     @Override
     public Genre create(Genre genre) {
-        if (genre.getId() <= 0) {
-            em.persist(genre);
-            return genre;
-        } else {
-            return em.merge(genre);
-        }
+        return em.merge(genre);
     }
 
     @Override

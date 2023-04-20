@@ -7,18 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import ru.otus.homework.dao.AuthorDao;
-import ru.otus.homework.model.Author;
+import ru.otus.homework.dao.CommentDao;
+import ru.otus.homework.model.Comment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Тестирование AuthorDaoJdbc")
+@DisplayName("Тестирование CommentDaoJdbc")
 @DataJpaTest
-@Import(AuthorDaoJpa.class)
-class AuthorDaoJpaTest {
+@Import(CommentDaoJpa.class)
+class CommentDaoJpaTest {
 
     @Autowired
-    private AuthorDao jpa;
+    private CommentDao jpa;
 
     @Autowired
     private TestEntityManager em;
@@ -27,7 +27,7 @@ class AuthorDaoJpaTest {
     @Test
     void getById() {
         val actual = jpa.getById(3L);
-        val expected = em.find(Author.class, 3L);
+        val expected = em.find(Comment.class, 3L);
         assertThat(actual).isPresent().get()
                 .usingRecursiveComparison().isEqualTo(expected);
     }
@@ -35,45 +35,45 @@ class AuthorDaoJpaTest {
     @DisplayName("создание записи")
     @Test
     void create() {
-        val actual = jpa.create(testCreateAuthor());
-        val expected = em.find(Author.class, actual.getId());
+        val actual = jpa.create(testCreateComment());
+        val expected = em.find(Comment.class, actual.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @DisplayName("обновление записи")
     @Test
     void update() {
-        val author = testUpdateAuthor();
-        jpa.update(author);
-        val expected = jpa.getById(author.getId()).get();
-        val actual = em.find(Author.class, author.getId());
+        val comment = testUpdateComment();
+        jpa.update(comment);
+        val expected = jpa.getById(comment.getId()).get();
+        val actual = em.find(Comment.class, comment.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @DisplayName("удаление записи")
     @Test
     void deleteById() {
-        val author = testDeleteByIdAuthor();
-        val authorId = author.getId();
-        jpa.create(author);
-        jpa.deleteById(authorId);
+        val comment = testDeleteByIdComment();
+        val commentId = comment.getId();
+        jpa.create(comment);
+        jpa.deleteById(commentId);
         em.clear();
-        assertThat(em.find(Author.class, authorId)).isNull();
+        assertThat(em.find(Comment.class, commentId)).isNull();
     }
 
-    private static Author testCreateAuthor() {
-        return new Author("author_name_1");
+    private static Comment testCreateComment() {
+        return new Comment("comment_name_1", 1L);
     }
 
-    private static Author testUpdateAuthor() {
-        return new Author(2L, "author_name_1");
+    private static Comment testUpdateComment() {
+        return new Comment(2L, "comment_name_1", 1L);
     }
 
-    private static Author testGetByIdAuthor() {
-        return new Author(3L, "author_name_3");
+    private static Comment testGetByIdComment() {
+        return new Comment(3L, "comment_name_3", 1L);
     }
 
-    private static Author testDeleteByIdAuthor() {
-        return new Author(112L, "author_name_1");
+    private static Comment testDeleteByIdComment() {
+        return new Comment(112L, "comment_name_1", 1L);
     }
 }

@@ -7,13 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
 import ru.otus.homework.dao.GenreDao;
-import ru.otus.homework.model.Book;
 import ru.otus.homework.model.Genre;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Тестирование GenreDaoJdbc")
 @DataJpaTest
@@ -38,9 +35,8 @@ class GenreDaoJpaTest {
     @DisplayName("создание записи")
     @Test
     void create() {
-        val genre = testCreateGenre();
-        val actual = jpa.create(genre);
-        val expected = em.find(Genre.class, genre.getId());
+        val actual = jpa.create(testCreateGenre());
+        val expected = em.find(Genre.class, actual.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 

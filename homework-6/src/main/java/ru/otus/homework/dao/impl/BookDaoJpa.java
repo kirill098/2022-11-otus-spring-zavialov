@@ -2,7 +2,6 @@ package ru.otus.homework.dao.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.dao.BookDao;
 import ru.otus.homework.model.Book;
 
@@ -31,26 +30,30 @@ public class BookDaoJpa implements BookDao {
 
     @Override
     public Book create(Book book) {
-        if (book.getId() <= 0) {
-            em.persist(book);
-            return book;
-        } else {
-            return em.merge(book);
-        }
+        return em.merge(book);
     }
 
     @Override
     public int update(Book book) {
-        Query query = em.createQuery("update Book b " +
+        book.getComments().forEach(comment -> {
+            Query queryComment = em.createQuery("update Comment c " +
+                    "set c.description = :description " +
+                    "where c.book_id = :book_id");
+            queryComment.setParameter("description", comment.getDescription());
+            queryComment.setParameter("book_id", book.getId());
+            queryComment.executeUpdate();
+        });
+
+        Query queryBook = em.createQuery("update Book b " +
                 "set b.title = :title, " +
                 "b.author = :author, " +
                 "b.genre = :genre " +
                 "where b.id = :id");
-        query.setParameter("title", book.getTitle());
-        query.setParameter("author", book.getAuthor());
-        query.setParameter("genre", book.getGenre());
-        query.setParameter("id", book.getId());
-        return query.executeUpdate();
+        queryBook.setParameter("title", book.getTitle());
+        queryBook.setParameter("author", book.getAuthor());
+        queryBook.setParameter("genre", book.getGenre());
+        queryBook.setParameter("id", book.getId());
+        return queryBook.executeUpdate();
     }
 
     @Override

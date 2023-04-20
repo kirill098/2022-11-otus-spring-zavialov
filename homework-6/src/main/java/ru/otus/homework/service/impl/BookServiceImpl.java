@@ -21,6 +21,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("id is null");
+        }
         return dao.getById(id).orElseThrow(() -> new NotFoundObjectException("Book not found with id = %s", id));
     }
 
@@ -40,6 +43,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void update(Book book) {
+        if (book.getId() == null) {
+            throw new IllegalArgumentException("id is null");
+        }
         int count = dao.update(book);
         if (count < 1) {
             throw new NotFoundObjectException("Book not found with id = %s", book.getId());
@@ -48,6 +54,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("id is null");
+        }
         dao.deleteById(id);
     }
 }

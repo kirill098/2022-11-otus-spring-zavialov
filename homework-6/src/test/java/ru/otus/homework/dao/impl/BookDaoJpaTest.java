@@ -7,15 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
 import ru.otus.homework.dao.BookDao;
 import ru.otus.homework.model.Author;
 import ru.otus.homework.model.Book;
 import ru.otus.homework.model.Genre;
 
+import java.util.Collections;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Тестирование BookDaoJdbc")
 @DataJpaTest
@@ -47,9 +47,8 @@ class BookDaoJpaTest {
     @DisplayName("создание записи")
     @Test
     void create() {
-        val book = testCreateBook();
-        val actual = jpa.create(book);
-        val expected = em.find(Book.class, book.getId());
+        val actual = jpa.create(testCreateBook());
+        val expected = em.find(Book.class, actual.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
@@ -79,19 +78,19 @@ class BookDaoJpaTest {
     }
 
     private static Book testCreateBook() {
-        return new Book(111L, "book_title_1", new Author(1L, ""), new Genre(1L, ""));
+        return new Book("book_title_1", new Author(1L, ""), new Genre(1L, ""), Collections.emptyList());
     }
 
     private static Book testUpdateBook() {
-        return new Book(2L, "MyTitle", new Author(2L, ""), new Genre(2L, ""));
+        return new Book(2L, "MyTitle", new Author(2L, ""), new Genre(2L, ""), Collections.emptyList());
     }
 
     private static Book testGetByIdBook() {
-        return new Book(1L, "book_title_1", new Author(1L, ""), new Genre(1L, ""));
+        return new Book(1L, "book_title_1", new Author(1L, ""), new Genre(1L, ""), Collections.emptyList());
     }
 
     private static Book testDeleteByIdBook() {
-        return new Book(222L, "book_title_3", new Author(3L, ""), new Genre(3L, ""));
+        return new Book(222L, "book_title_3", new Author(3L, ""), new Genre(3L, ""), Collections.emptyList());
     }
 
 }

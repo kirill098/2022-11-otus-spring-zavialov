@@ -9,25 +9,30 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Author {
+public class Comment {
 
-    public Author(Long id) {
-        this.id = id;
+    public Comment(String description) {
+        this.description = description;
     }
 
-    public Author(String name) {
-        this.name = name;
+    public Comment(String description, Long bookId) {
+        this.description = description;
+        this.book_id = bookId;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "description", nullable = false)
+    private String description;
+
+    @JoinColumn(name = "book_id", nullable = false)
+    private Long book_id;
 }
