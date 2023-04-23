@@ -20,6 +20,10 @@ public class Genre {
         this.id = id;
     }
 
+    public Genre(String title) {
+        this.title = title;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

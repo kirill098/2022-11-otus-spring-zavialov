@@ -18,13 +18,9 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Comment {
 
-    public Comment(String description) {
+    public Comment(String description, Book book) {
         this.description = description;
-    }
-
-    public Comment(String description, Long bookId) {
-        this.description = description;
-        this.book_id = bookId;
+        this.book = book;
     }
 
     @Id
@@ -35,5 +31,5 @@ public class Comment {
     private String description;
 
     @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
-    private Long book_id;
+    private Book book;
 }

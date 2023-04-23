@@ -18,6 +18,12 @@ import javax.persistence.OneToOne;
 @Entity
 public class Book {
 
+    public Book(String title, Author author, Genre genre) {
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

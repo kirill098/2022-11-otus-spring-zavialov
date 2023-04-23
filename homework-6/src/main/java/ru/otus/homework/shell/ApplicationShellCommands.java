@@ -18,17 +18,15 @@ public class ApplicationShellCommands {
 
     private final BookService bookDao;
 
-    // cb --title MyBook --authorId 1 --genreId 1 --comment MyComment
+    // cb --title MyBook --authorId 1 --genreId 1
     @ShellMethod(value = "create book", key = {"cb"})
     public void createBook(@ShellOption(defaultValue = "default_book_title") String title,
                            @ShellOption(defaultValue = "1") Long authorId,
-                           @ShellOption(defaultValue = "1") Long genreId,
-                           @ShellOption(defaultValue = "empty") String comment) {
+                           @ShellOption(defaultValue = "1") Long genreId) {
         Book book = new Book();
         book.setTitle(title);
         book.setAuthor(new Author(authorId));
         book.setGenre(new Genre(genreId));
-        book.setComments(List.of(new Comment(comment)));
         bookDao.create(book);
     }
 
@@ -44,19 +42,17 @@ public class ApplicationShellCommands {
         System.out.println(book);
     }
 
-    // ub --id 1 --title MyBook --authorId 2 --genreId 2 --comment SecondComment
+    // ub --id 1 --title MyBook --authorId 2 --genreId 2
     @ShellMethod(value = "update book", key = {"ub"})
     public void updateBook(@ShellOption(defaultValue = "999") Long id,
                            @ShellOption(defaultValue = "default_book_title") String title,
                            @ShellOption(defaultValue = "1") Long authorId,
-                           @ShellOption(defaultValue = "1") Long genreId,
-                           @ShellOption(defaultValue = "empty") String comment) {
+                           @ShellOption(defaultValue = "1") Long genreId) {
         Book book = new Book();
         book.setId(id);
         book.setTitle(title);
         book.setAuthor(new Author(authorId));
         book.setGenre(new Genre(genreId));
-        book.setComments(List.of(new Comment(comment)));
         bookDao.update(book);
     }
 

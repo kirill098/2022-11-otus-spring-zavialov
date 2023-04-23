@@ -35,7 +35,7 @@ class AuthorDaoJpaTest {
     @DisplayName("создание записи")
     @Test
     void create() {
-        val actual = jpa.create(testCreateAuthor());
+        val actual = jpa.save(testCreateAuthor());
         val expected = em.find(Author.class, actual.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
@@ -44,7 +44,7 @@ class AuthorDaoJpaTest {
     @Test
     void update() {
         val author = testUpdateAuthor();
-        jpa.update(author);
+        jpa.save(author);
         val expected = jpa.getById(author.getId()).get();
         val actual = em.find(Author.class, author.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
@@ -54,10 +54,10 @@ class AuthorDaoJpaTest {
     @Test
     void deleteById() {
         val author = testDeleteByIdAuthor();
-        val authorId = author.getId();
-        jpa.create(author);
+        val actual = jpa.save(author);
+        val authorId = actual.getId();
         jpa.deleteById(authorId);
-        em.clear();
+        em.flush();
         assertThat(em.find(Author.class, authorId)).isNull();
     }
 
@@ -66,14 +66,10 @@ class AuthorDaoJpaTest {
     }
 
     private static Author testUpdateAuthor() {
-        return new Author(2L, "author_name_1");
-    }
-
-    private static Author testGetByIdAuthor() {
-        return new Author(3L, "author_name_3");
+        return new Author("author_name_1");
     }
 
     private static Author testDeleteByIdAuthor() {
-        return new Author(112L, "author_name_1");
+        return new Author("author_name_1");
     }
 }

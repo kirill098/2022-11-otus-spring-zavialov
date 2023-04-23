@@ -35,7 +35,7 @@ class GenreDaoJpaTest {
     @DisplayName("создание записи")
     @Test
     void create() {
-        val actual = jpa.create(testCreateGenre());
+        val actual = jpa.save(testCreateGenre());
         val expected = em.find(Genre.class, actual.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
@@ -44,7 +44,7 @@ class GenreDaoJpaTest {
     @Test
     void update() {
         val genre = testUpdateGenre();
-        jpa.update(genre);
+        jpa.save(genre);
         val expected = jpa.getById(genre.getId());
         val actual = em.find(Genre.class, genre.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected.get());
@@ -54,26 +54,22 @@ class GenreDaoJpaTest {
     @Test
     void deleteById() {
         val genre = testDeleteByIdGenre();
-        val genreId = genre.getId();
-        jpa.create(genre);
+        val actual = jpa.save(genre);
+        val genreId = actual.getId();
         jpa.deleteById(genreId);
-        em.clear();
+        em.flush();
         assertThat(em.find(Genre.class, genreId)).isNull();
     }
 
     private static Genre testCreateGenre() {
-        return new Genre(111L, "genre_title_3");
+        return new Genre("genre_title_3");
     }
 
     private static Genre testUpdateGenre() {
-        return new Genre(2L, "genre_title_3");
-    }
-
-    private static Genre testGetByIdGenre() {
-        return new Genre(3L, "genre_title_3");
+        return new Genre("genre_title_3");
     }
 
     private static Genre testDeleteByIdGenre() {
-        return new Genre(112L, "genre_title_3");
+        return new Genre("genre_title_3");
     }
 }
