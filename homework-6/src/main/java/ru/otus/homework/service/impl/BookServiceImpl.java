@@ -1,6 +1,7 @@
 package ru.otus.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +21,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getById(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("id is null");
-        }
         return dao.getById(id).orElseThrow(() -> new NotFoundObjectException("Book not found with id = %s", id));
     }
 
@@ -33,9 +31,9 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public void create(Book book) {
+    public Book create(Book book) {
         try {
-            dao.save(book);
+            return dao.save(book);
         } catch (DuplicateKeyException e) {
             throw new AlreadyExistObjectException("Book has already existed with id = %s", book.getId());
         }
@@ -43,22 +41,17 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public void update(Book book) {
-        if (book.getId() == null) {
-            throw new IllegalArgumentException("id is null");
-        }
-        Book result = dao.save(book);
+    public Book update(Book book) {
+        val result = dao.save(book);
         if (result == null) {
             throw new NotFoundObjectException("Book not found with id = %s", book.getId());
         }
+        return result;
     }
 
     @Transactional
     @Override
     public void deleteById(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("id is null");
-        }
         dao.deleteById(id);
     }
 }
