@@ -13,7 +13,6 @@ import ru.otus.homework.service.BookService;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
@@ -32,26 +31,29 @@ public class BookServiceImpl implements BookService {
         return dao.getAll();
     }
 
+    @Transactional
     @Override
     public void create(Book book) {
         try {
-            dao.create(book);
+            dao.save(book);
         } catch (DuplicateKeyException e) {
             throw new AlreadyExistObjectException("Book has already existed with id = %s", book.getId());
         }
     }
 
+    @Transactional
     @Override
     public void update(Book book) {
         if (book.getId() == null) {
             throw new IllegalArgumentException("id is null");
         }
-        int count = dao.update(book);
-        if (count < 1) {
+        Book result = dao.save(book);
+        if (result == null) {
             throw new NotFoundObjectException("Book not found with id = %s", book.getId());
         }
     }
 
+    @Transactional
     @Override
     public void deleteById(Long id) {
         if (id == null) {

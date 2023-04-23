@@ -6,10 +6,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Data
 @NoArgsConstructor
@@ -33,6 +34,6 @@ public class Comment {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @JoinColumn(name = "book_id", nullable = false)
+    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
     private Long book_id;
 }

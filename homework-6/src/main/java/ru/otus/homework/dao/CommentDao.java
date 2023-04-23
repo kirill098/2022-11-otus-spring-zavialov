@@ -8,9 +8,7 @@ public interface CommentDao {
 
     Optional<Comment> getById(Long id);
 
-    Comment create(Comment comment);
-
-    int update(Comment comment);
+    Comment save(Comment comment);
 
     void deleteById(Long id);
 }

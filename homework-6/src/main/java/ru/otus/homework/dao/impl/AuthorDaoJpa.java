@@ -7,7 +7,6 @@ import ru.otus.homework.model.Author;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -23,26 +22,20 @@ public class AuthorDaoJpa implements AuthorDao {
     }
 
     @Override
-    public Author create(Author author) {
-        return em.merge(author);
-    }
-
-    @Override
-    public int update(Author author) {
-        Query query = em.createQuery("update Author a " +
-                "set a.name = :name " +
-                "where a.id = :id");
-        query.setParameter("name", author.getName());
-        query.setParameter("id", author.getId());
-        return query.executeUpdate();
+    public Author save(Author author) {
+        if (author.getId() == null) {
+            em.persist(author);
+            return author;
+        } else {
+            return em.merge(author);
+        }
     }
 
     @Override
     public void deleteById(Long id) {
-        Query query = em.createQuery("delete " +
-                "from Author a " +
-                "where a.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        Author author = em.find(Author.class, id);
+        if (author != null) {
+            em.remove(author);
+        }
     }
 }

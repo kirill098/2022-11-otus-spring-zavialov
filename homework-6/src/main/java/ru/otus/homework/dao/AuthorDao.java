@@ -8,9 +8,7 @@ public interface AuthorDao {
 
     Optional<Author> getById(Long id);
 
-    Author create(Author author);
-
-    int update(Author author);
+    Author save(Author author);
 
     void deleteById(Long id);
 }

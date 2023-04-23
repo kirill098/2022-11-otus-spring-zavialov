@@ -7,7 +7,6 @@ import ru.otus.homework.model.Comment;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -23,26 +22,22 @@ public class CommentDaoJpa implements CommentDao {
     }
 
     @Override
-    public Comment create(Comment comment) {
-        return em.merge(comment);
+    public Comment save(Comment comment) {
+        if (comment.getId() == null) {
+            em.persist(comment);
+            return comment;
+        } else {
+            return em.merge(comment);
+        }
     }
 
-    @Override
-    public int update(Comment comment) {
-        Query query = em.createQuery("update Comment c " +
-                "set c.description = :description " +
-                "where c.id = :id");
-        query.setParameter("description", comment.getDescription());
-        query.setParameter("id", comment.getId());
-        return query.executeUpdate();
-    }
 
     @Override
     public void deleteById(Long id) {
-        Query query = em.createQuery("delete " +
-                "from Comment c " +
-                "where c.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        Comment comment = em.find(Comment.class, id);
+        if (comment != null) {
+            em.remove(comment);
+        }
+        ;
     }
 }

@@ -7,7 +7,6 @@ import ru.otus.homework.model.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -23,26 +22,21 @@ public class GenreDaoJpa implements GenreDao {
     }
 
     @Override
-    public Genre create(Genre genre) {
-        return em.merge(genre);
+    public Genre save(Genre genre) {
+        if (genre.getId() == null) {
+            em.persist(genre);
+            return genre;
+        } else {
+            return em.merge(genre);
+        }
     }
 
-    @Override
-    public int update(Genre genre) {
-        Query query = em.createQuery("update Genre g " +
-                "set g.title = :title " +
-                "where g.id = :id");
-        query.setParameter("title", genre.getTitle());
-        query.setParameter("id", genre.getId());
-        return query.executeUpdate();
-    }
 
     @Override
     public void deleteById(Long id) {
-        Query query = em.createQuery("delete " +
-                "from Genre g " +
-                "where g.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        Genre genre = em.find(Genre.class, id);
+        if (genre != null) {
+            em.remove(genre);
+        }
     }
 }
