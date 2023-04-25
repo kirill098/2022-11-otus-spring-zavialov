@@ -9,8 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Data
 @NoArgsConstructor
@@ -31,11 +30,9 @@ public class Book {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @OneToOne
-    @JoinColumn(name = "author_id", nullable = false)
+    @ManyToOne
     private Author author;
 
-    @OneToOne
-    @JoinColumn(name = "genre_id", nullable = false)
+    @ManyToOne
     private Genre genre;
 }
