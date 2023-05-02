@@ -1,7 +1,12 @@
 package ru.otus.homework.model;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +16,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -28,39 +37,7 @@ public class Comment {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @ToString.Exclude
     @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
     private Book book;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", book=" + book +
-                '}';
-    }
 }

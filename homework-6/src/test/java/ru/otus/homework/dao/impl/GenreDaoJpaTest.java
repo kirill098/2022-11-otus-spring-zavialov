@@ -26,35 +26,32 @@ class GenreDaoJpaTest {
     @DisplayName("получение записи по id")
     @Test
     void getById() {
-        val actual = jpa.getById(3L);
-        val expected = em.find(Genre.class, 3L);
-        assertThat(actual).isPresent().get()
-                .usingRecursiveComparison().isEqualTo(expected);
+        val genreId = jpa.save(testCreateGenre()).getId();
+        val expected = jpa.getById(genreId);
+        val actual = em.find(Genre.class, genreId);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected.orElse(null));
     }
 
     @DisplayName("создание записи")
     @Test
     void create() {
-        val actual = jpa.save(testCreateGenre());
-        val expected = em.find(Genre.class, actual.getId());
+        val expected = jpa.save(testCreateGenre());
+        val actual = em.find(Genre.class, expected.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @DisplayName("обновление записи")
     @Test
     void update() {
-        val genre = testUpdateGenre();
-        jpa.save(genre);
-        val expected = jpa.getById(genre.getId());
-        val actual = em.find(Genre.class, genre.getId());
-        assertThat(actual).usingRecursiveComparison().isEqualTo(expected.get());
+        val expected = jpa.save(testUpdateGenre());
+        val actual = em.find(Genre.class, expected.getId());
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @DisplayName("удаление записи")
     @Test
     void deleteById() {
-        val genre = testDeleteByIdGenre();
-        val actual = jpa.save(genre);
+        val actual = jpa.save(testDeleteByIdGenre());
         val genreId = actual.getId();
         jpa.deleteById(genreId);
         em.flush();
@@ -62,11 +59,11 @@ class GenreDaoJpaTest {
     }
 
     private static Genre testCreateGenre() {
-        return new Genre("genre_title_3");
+        return new Genre("genre_title_1");
     }
 
     private static Genre testUpdateGenre() {
-        return new Genre("genre_title_3");
+        return new Genre("genre_title_2");
     }
 
     private static Genre testDeleteByIdGenre() {

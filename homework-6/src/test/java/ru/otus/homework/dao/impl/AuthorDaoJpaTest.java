@@ -26,35 +26,32 @@ class AuthorDaoJpaTest {
     @DisplayName("получение записи по id")
     @Test
     void getById() {
-        val actual = jpa.getById(3L);
-        val expected = em.find(Author.class, 3L);
-        assertThat(actual).isPresent().get()
-                .usingRecursiveComparison().isEqualTo(expected);
+        val authorId = jpa.save(testCreateAuthor()).getId();
+        val expected = jpa.getById(authorId);
+        val actual = em.find(Author.class, authorId);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected.orElse(null));
     }
 
     @DisplayName("создание записи")
     @Test
     void create() {
-        val actual = jpa.save(testCreateAuthor());
-        val expected = em.find(Author.class, actual.getId());
+        val expected = jpa.save(testCreateAuthor());
+        val actual = em.find(Author.class, expected.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @DisplayName("обновление записи")
     @Test
     void update() {
-        val author = testUpdateAuthor();
-        jpa.save(author);
-        val expected = jpa.getById(author.getId()).get();
-        val actual = em.find(Author.class, author.getId());
+        val expected = jpa.save(testUpdateAuthor());
+        val actual = em.find(Author.class, expected.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @DisplayName("удаление записи")
     @Test
     void deleteById() {
-        val author = testDeleteByIdAuthor();
-        val actual = jpa.save(author);
+        val actual = jpa.save(testDeleteByIdAuthor());
         val authorId = actual.getId();
         jpa.deleteById(authorId);
         em.flush();
@@ -66,10 +63,10 @@ class AuthorDaoJpaTest {
     }
 
     private static Author testUpdateAuthor() {
-        return new Author("author_name_1");
+        return new Author("author_name_2");
     }
 
     private static Author testDeleteByIdAuthor() {
-        return new Author("author_name_1");
+        return new Author("author_name_3");
     }
 }

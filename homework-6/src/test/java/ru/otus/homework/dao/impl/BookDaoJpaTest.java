@@ -12,6 +12,9 @@ import ru.otus.homework.model.Author;
 import ru.otus.homework.model.Book;
 import ru.otus.homework.model.Genre;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,58 +32,52 @@ class BookDaoJpaTest {
     @DisplayName("получение записи по id")
     @Test
     void getById() {
-        val actual = jpa.getById(3L);
-        val expected = em.find(Book.class, 3L);
-        assertThat(actual).isPresent().get()
-                .usingRecursiveComparison().isEqualTo(expected);
+        val authorId = jpa.save(createBook()).getId();
+        val expected = jpa.getById(authorId);
+        val actual = em.find(Book.class, authorId);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected.orElse(null));
     }
 
     @DisplayName("получение всех записей")
     @Test
     void getAll() {
+        for (int i : List.of(1, 2, 3)) {
+            em.persist(createBook());
+        }
         val actual = jpa.getAll();
-        assertEquals(7, actual.size());
+        assertEquals(3, actual.size());
     }
 
     @DisplayName("создание записи")
     @Test
     void create() {
-        val actual = jpa.save(testCreateBook());
-        val expected = em.find(Book.class, actual.getId());
+        val expected = jpa.save(createBook());
+        val actual = em.find(Book.class, expected.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @DisplayName("обновление записи")
     @Test
     void update() {
-        val book = testUpdateBook();
-        jpa.save(book);
-        val expected = jpa.getById(book.getId()).get();
-        val actual = em.find(Book.class, book.getId());
+        val expected = jpa.save(createBook());
+        val actual = em.find(Book.class, expected.getId());
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @DisplayName("удаление записи")
     @Test
     void deleteById() {
-        val book = testDeleteByIdBook();
-        val actual = jpa.save(book);
+        val actual = jpa.save(createBook());
         val bookId = actual.getId();
         jpa.deleteById(bookId);
         em.flush();
         assertThat(em.find(Book.class, bookId)).isNull();
     }
 
-    private static Book testCreateBook() {
-        return new Book("book_title_1", new Author(1L), new Genre(1L));
-    }
-
-    private static Book testUpdateBook() {
-        return new Book("MyTitle", new Author(2L), new Genre(2L));
-    }
-
-    private static Book testDeleteByIdBook() {
-        return new Book("book_title_3", new Author(3L), new Genre(3L));
+    private Book createBook() {
+        val genre = em.persist(new Genre("TestGenre"));
+        val author = em.persist(new Author("TestAuthor"));
+        return new Book("title", author, genre);
     }
 
 }
