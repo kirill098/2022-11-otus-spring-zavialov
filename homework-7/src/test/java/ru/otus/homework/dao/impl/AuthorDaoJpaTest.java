@@ -68,10 +68,10 @@ class AuthorDaoJpaTest {
     }
 
     private static Author testUpdateAuthor() {
-        return new Author(1L, "author_name_1");
+        return new Author( "author_name_2");
     }
 
     private static Author testDeleteByIdAuthor() {
-        return new Author("author_name_1");
+        return new Author("author_name_3");
     }
 }

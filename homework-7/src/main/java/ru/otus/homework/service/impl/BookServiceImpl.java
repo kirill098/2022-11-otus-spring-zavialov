@@ -19,11 +19,13 @@ public class BookServiceImpl implements BookService {
 
     private final BookDao dao;
 
+    @Transactional(readOnly = true)
     @Override
     public Book getById(Long id) {
         return dao.findById(id).orElseThrow(() -> new NotFoundObjectException("Book not found with id = %s", id));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Book> getAll() {
         return dao.findAll();
